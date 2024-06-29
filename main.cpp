@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <iostream>
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 800;
@@ -16,7 +17,7 @@ const float MIN_RADIUS = 144.f;
 const float MAX_RADIUS = 377.f;
 const sf::Color HIGHLIGHT = sf::Color(255, 115, 115);
 // To-Do: Add UI functionality to adjust speed
-const int STEPS_PER_FRAME = 10000;
+const int STEPS_PER_FRAME = 8943;
 
 class SortVisualizer {
 private:
@@ -27,6 +28,7 @@ private:
     std::vector<float> elts;
     std::mt19937 rng;
     bool sortingComplete = false;
+    bool endAnimationComplete = false;
     int currIdx = 0;
 
     void initializeElements() {
@@ -56,29 +58,26 @@ private:
         window.draw(lines);
     }
 
+    void render() {
+        window.clear(sf::Color::Black);
+        drawElements();
+        window.display();
+    }
+
     void bubbleSortStep() {
         if (currIdx >= NUM_ELEMENTS - 1) {
             currIdx = 0;
+            if (std::is_sorted(elts.begin(), elts.end())) {
+                sortingComplete = true;
+                return;
+            }
         }
-        
+
         if (elts[currIdx] > elts[currIdx + 1]) {
             std::swap(elts[currIdx], elts[currIdx + 1]);
         }
         
         currIdx++;
-        
-        if (currIdx >= NUM_ELEMENTS - 1) {
-            if (std::is_sorted(elts.begin(), elts.end())) {
-                sortingComplete = true;
-            /* --- to make it loop uncomment this stuff below --- */
-                /*
-                elts.clear();
-                rng.seed(std::random_device()());
-                initializeElements();
-                sortingComplete = false;
-                */
-            }
-        }
     }
 
 public:
@@ -100,11 +99,16 @@ public:
                 for (int i = 0; i < STEPS_PER_FRAME; ++i) {
                     bubbleSortStep();
                 }
+                render();
             }
-
-            window.clear(sf::Color::Black);
-            drawElements();
-            window.display();
+            else if (!endAnimationComplete) {
+                // Re-iterate through all elements
+                for (currIdx = 0; currIdx < NUM_ELEMENTS; currIdx += 10) {
+                    render();
+                }
+                endAnimationComplete = true;
+            }
+            else render();
         }
     }
 };
