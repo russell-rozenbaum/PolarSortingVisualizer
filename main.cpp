@@ -27,9 +27,16 @@ private:
     sf::RenderWindow window;
     std::vector<float> elts;
     std::mt19937 rng;
-    bool sortingComplete = false;
     bool endAnimationComplete = false;
     int currIdx = 0;
+
+    bool selectionDone = false;
+    bool bubbleDone = false;
+    bool sortingComplete = false;
+   
+    int insertIdx = 0;
+    int selectIdx = 0;
+    int selectMinIdx = 0;
 
     void initializeElements() {
         std::uniform_real_distribution<float> dist(MIN_RADIUS, MAX_RADIUS);
@@ -64,11 +71,34 @@ private:
         window.display();
     }
 
+    void selectionSortStep() {
+        if (selectIdx >= NUM_ELEMENTS - 1) {
+            selectionDone = true;
+            elts.clear();
+            initializeElements();
+            currIdx = 0;
+            return;
+        }
+        else if (currIdx >= NUM_ELEMENTS - 1) {
+            std::swap(elts[selectIdx], elts[selectMinIdx]);
+            selectIdx++;
+            currIdx = selectIdx + 1;
+            selectMinIdx = selectIdx;
+        }
+        if (elts[currIdx] < elts[selectMinIdx]) {
+            selectMinIdx = currIdx;
+        }
+        currIdx++;
+    }
+
     void bubbleSortStep() {
         if (currIdx >= NUM_ELEMENTS - 1) {
             currIdx = 0;
             if (std::is_sorted(elts.begin(), elts.end())) {
-                sortingComplete = true;
+                bubbleDone = true;
+                elts.clear();
+                initializeElements();
+                currIdx = 0;
                 return;
             }
         }
@@ -78,6 +108,25 @@ private:
         }
         
         currIdx++;
+    }
+
+    void insertionSortStep() {
+        if (insertIdx >= NUM_ELEMENTS - 1) {
+            sortingComplete = true;
+            return;
+        }
+        if (currIdx <= 0) {
+            insertIdx++;
+            currIdx = insertIdx;
+        }
+        else if (elts[currIdx] < elts[currIdx - 1]) {
+            std::swap(elts[currIdx], elts[currIdx - 1]);
+            currIdx--;
+        }
+        else {
+            insertIdx++;
+            currIdx = insertIdx;
+        }
     }
 
 public:
@@ -96,9 +145,22 @@ public:
             }
 
             if (!sortingComplete) {
-                for (int i = 0; i < STEPS_PER_FRAME; ++i) {
-                    bubbleSortStep();
+                if (!selectionDone) {
+                    for (int i = 0; i < STEPS_PER_FRAME; ++i) {
+                        selectionSortStep();
+                    }
                 }
+                else if (!bubbleDone) {
+                    for (int i = 0; i < STEPS_PER_FRAME; ++i) {
+                        bubbleSortStep();
+                    }
+                }
+                else {
+                    for (int i = 0; i < STEPS_PER_FRAME; ++i) {
+                        insertionSortStep();
+                    }
+                }
+                
                 render();
             }
             else if (!endAnimationComplete) {
