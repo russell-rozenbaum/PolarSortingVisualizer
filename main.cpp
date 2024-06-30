@@ -37,9 +37,9 @@ private:
     int selectIdx = 0;
     int selectMinIdx = 0;
 
-    BubbleSort algorithm = BubbleSort(NUM_ELTS);
     //InsertionSort algorithm = InsertionSort(NUM_ELTS);
-    //SelectionSort algorithm = SelectionSort(NUM_ELTS);
+    //BubbleSort algorithm = BubbleSort(NUM_ELTS);
+    SelectionSort algorithm = SelectionSort(NUM_ELTS);
     
     void initializeElements() {
         std::uniform_real_distribution<float> dist(MIN_RADIUS, MAX_RADIUS);
@@ -75,7 +75,7 @@ private:
     }
 
 public:
-    SortVisualizer() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Polar Sorting Visualizer") {
+    SortVisualizer() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Selection Sort") {
         window.setFramerateLimit(120);
         rng.seed(std::random_device()());
         initializeElements();
