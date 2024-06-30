@@ -37,9 +37,9 @@ private:
     int selectIdx = 0;
     int selectMinIdx = 0;
 
-    //InsertionSort algorithm = InsertionSort(NUM_ELTS);
+    InsertionSort algorithm = InsertionSort(NUM_ELTS);
     //BubbleSort algorithm = BubbleSort(NUM_ELTS);
-    SelectionSort algorithm = SelectionSort(NUM_ELTS);
+    //SelectionSort algorithm = SelectionSort(NUM_ELTS);
     
     void initializeElements() {
         std::uniform_real_distribution<float> dist(MIN_RADIUS, MAX_RADIUS);
