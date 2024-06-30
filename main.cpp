@@ -4,10 +4,13 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
+#include "BubbleSort.cpp"
+#include "InsertionSort.cpp"
+#include "SelectionSort.cpp"
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 800;
-const int NUM_ELEMENTS = 4000;
+const int NUM_ELTS = 4000;
 // 11th term of fib
 const float MIN_RADIUS = 144.f;
 // 89
@@ -27,29 +30,29 @@ private:
     sf::RenderWindow window;
     std::vector<float> elts;
     std::mt19937 rng;
-    bool endAnimationComplete = false;
     int currIdx = 0;
-
-    bool selectionDone = false;
-    bool bubbleDone = false;
     bool sortingComplete = false;
-   
-    int insertIdx = 0;
+    bool endAnimationComplete = false;
+    
     int selectIdx = 0;
     int selectMinIdx = 0;
 
+    BubbleSort algorithm = BubbleSort(NUM_ELTS);
+    //InsertionSort algorithm = InsertionSort(NUM_ELTS);
+    //SelectionSort algorithm = SelectionSort(NUM_ELTS);
+    
     void initializeElements() {
         std::uniform_real_distribution<float> dist(MIN_RADIUS, MAX_RADIUS);
-        for (int i = 0; i < NUM_ELEMENTS; ++i) {
+        for (int i = 0; i < NUM_ELTS; ++i) {
             elts.push_back(dist(rng));
         }
     }
 
     void drawElements() {
-        sf::VertexArray lines(sf::Lines, NUM_ELEMENTS * 2);
-        for (int i = 0; i < NUM_ELEMENTS; ++i) {
+        sf::VertexArray lines(sf::Lines, NUM_ELTS * 2);
+        for (int i = 0; i < NUM_ELTS; ++i) {
 
-            float theta = i * (2 * M_PI / NUM_ELEMENTS);
+            float theta = i * (2 * M_PI / NUM_ELTS);
             float x = (WINDOW_WIDTH / 2) + (elts[i] * std::cos(theta));
             float y = (WINDOW_HEIGHT / 2) + (elts[i] * std::sin(theta));
             lines[i * 2].position = sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -71,66 +74,8 @@ private:
         window.display();
     }
 
-    void selectionSortStep() {
-        if (selectIdx >= NUM_ELEMENTS - 1) {
-            selectionDone = true;
-            elts.clear();
-            initializeElements();
-            currIdx = 0;
-            return;
-        }
-        else if (currIdx >= NUM_ELEMENTS - 1) {
-            std::swap(elts[selectIdx], elts[selectMinIdx]);
-            selectIdx++;
-            currIdx = selectIdx + 1;
-            selectMinIdx = selectIdx;
-        }
-        if (elts[currIdx] < elts[selectMinIdx]) {
-            selectMinIdx = currIdx;
-        }
-        currIdx++;
-    }
-
-    void bubbleSortStep() {
-        if (currIdx >= NUM_ELEMENTS - 1) {
-            currIdx = 0;
-            if (std::is_sorted(elts.begin(), elts.end())) {
-                bubbleDone = true;
-                elts.clear();
-                initializeElements();
-                currIdx = 0;
-                return;
-            }
-        }
-
-        if (elts[currIdx] > elts[currIdx + 1]) {
-            std::swap(elts[currIdx], elts[currIdx + 1]);
-        }
-        
-        currIdx++;
-    }
-
-    void insertionSortStep() {
-        if (insertIdx >= NUM_ELEMENTS - 1) {
-            sortingComplete = true;
-            return;
-        }
-        if (currIdx <= 0) {
-            insertIdx++;
-            currIdx = insertIdx;
-        }
-        else if (elts[currIdx] < elts[currIdx - 1]) {
-            std::swap(elts[currIdx], elts[currIdx - 1]);
-            currIdx--;
-        }
-        else {
-            insertIdx++;
-            currIdx = insertIdx;
-        }
-    }
-
 public:
-    SortVisualizer() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Polar Sort Visualizer") {
+    SortVisualizer() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Polar Sorting Visualizer") {
         window.setFramerateLimit(120);
         rng.seed(std::random_device()());
         initializeElements();
@@ -143,29 +88,15 @@ public:
                 if (event.type == sf::Event::Closed)
                     window.close();
             }
-
             if (!sortingComplete) {
-                if (!selectionDone) {
-                    for (int i = 0; i < STEPS_PER_FRAME; ++i) {
-                        selectionSortStep();
-                    }
+                for (int timer = 0; timer < STEPS_PER_FRAME; ++timer) {
+                    sortingComplete = algorithm.step(currIdx, elts) || sortingComplete;
                 }
-                else if (!bubbleDone) {
-                    for (int i = 0; i < STEPS_PER_FRAME; ++i) {
-                        bubbleSortStep();
-                    }
-                }
-                else {
-                    for (int i = 0; i < STEPS_PER_FRAME; ++i) {
-                        insertionSortStep();
-                    }
-                }
-                
                 render();
             }
             else if (!endAnimationComplete) {
                 // Re-iterate through all elements
-                for (currIdx = 0; currIdx < NUM_ELEMENTS; currIdx += 10) {
+                for (currIdx = 0; currIdx < NUM_ELTS; currIdx += 10) {
                     render();
                 }
                 endAnimationComplete = true;
