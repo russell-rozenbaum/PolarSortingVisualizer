@@ -7,7 +7,8 @@ RadixSort::RadixSort(const int &NUM_ELTS, const float &MAX_RADIUS) :
           //converted(false),
            counted(false),
             accumulated(false),
-              place(1)
+            // Not perfect, but pretty precise for using a vector of floats
+              place(0.0001)
                 { for (int i = 0; i < 10; i++) buckets[i] = 0; }
 
 bool RadixSort::step(int &currIdx, std::vector<float> &elements) {
@@ -67,7 +68,6 @@ void RadixSort::construct(int &currIdx, std::vector<float> &elements) {
         currIdx = 0;
         reset();
     }
-    std::cout << currIdx << "\n";
     elements[buckets[static_cast<int>(snapshot[currIdx] / place) % 10] - 1] = snapshot[currIdx];
     buckets[static_cast<int>(snapshot[currIdx] / place) % 10]--;
     currIdx--;

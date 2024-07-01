@@ -6,7 +6,6 @@
 class SelectionSort {
     private:
         const int NUM_ELEMENTS;
-        int* currIdx;
         int selectIdx;
         int selectMinIdx;
         

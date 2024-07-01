@@ -3,13 +3,13 @@
 #include <algorithm>
 
 
-class BubbleSort {
+class ReverseBubbleSort {
     private:
         const int NUM_ELEMENTS;
-        int topIndex;
+        int bottomIndex;
 
     public:
-        BubbleSort(const int &NUM_ELTS);
+        ReverseBubbleSort(const int &NUM_ELTS, int &currIdx);
         
         bool step(int &currIdx, std::vector<float> &elements);
 

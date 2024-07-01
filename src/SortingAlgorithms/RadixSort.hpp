@@ -8,14 +8,13 @@ class RadixSort {
     private:
         const int NUM_ELEMENTS;
         const float MAX_R;
-        int* currIdx;
 
         //bool converted;
         bool counted;
         bool accumulated;
         bool constructed;
 
-        int place;
+        float place;
         int buckets[10];
         std::vector<float> snapshot;
 

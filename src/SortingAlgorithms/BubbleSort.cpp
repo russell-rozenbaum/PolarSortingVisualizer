@@ -1,14 +1,13 @@
 #include "BubbleSort.hpp"
 
 BubbleSort::BubbleSort(const int &NUM_ELTS) : 
-        NUM_ELEMENTS(NUM_ELTS) {}
+        NUM_ELEMENTS(NUM_ELTS), topIndex(NUM_ELTS - 1) {}
 
 bool BubbleSort::step(int &currIdx, std::vector<float> &elements) {
-        if (currIdx >= NUM_ELEMENTS - 1) {
+        if (currIdx > topIndex) {
             currIdx = 0;
-            if (std::is_sorted(elements.begin(), elements.end())) {
-                return true;
-            }
+            topIndex--;
+            if (topIndex < 0) return true;
         }
 
         if (elements[currIdx] > elements[currIdx + 1]) {

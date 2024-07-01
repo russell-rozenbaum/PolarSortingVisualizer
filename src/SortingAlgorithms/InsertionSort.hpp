@@ -6,7 +6,6 @@
 class InsertionSort {
     private:
         const int NUM_ELEMENTS;
-        int* currIdx;
         int insertIdx;
 
     public:

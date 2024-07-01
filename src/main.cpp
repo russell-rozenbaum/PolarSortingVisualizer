@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include "SortingAlgorithms/BubbleSort.cpp"
+#include "SortingAlgorithms/ReverseBubbleSort.cpp"
 #include "SortingAlgorithms/InsertionSort.cpp"
 #include "SortingAlgorithms/SelectionSort.cpp"
 #include "SortingAlgorithms/RadixSort.cpp"
@@ -12,16 +13,20 @@
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 800;
 const int NUM_ELTS = 4000;
-// 11th term of fib
-const float MIN_RADIUS = 144.f;
+// This is particularly interesting to change with radix sort
+// Perhaps make it adjustable in future
+// Update: I could just start at 0.01 for the place value in RadixSort
+const int GROWTH_FACTOR = 1;
+const float MIN_RADIUS = 0.f;
 // 89
 // 144
 // 233
+// 377
 // 14th term of fib
-const float MAX_RADIUS = 377.f;
+const float MAX_RADIUS = 377.f * GROWTH_FACTOR;
 const sf::Color HIGHLIGHT = sf::Color(255, 115, 115);
 // To-Do: Add UI functionality to adjust speed
-const int STEPS_PER_FRAME = 30;
+const int STEPS_PER_FRAME = 8359;
 
 class SortVisualizer {
 private:
@@ -40,8 +45,9 @@ private:
 
     //InsertionSort algorithm = InsertionSort(NUM_ELTS);
     //BubbleSort algorithm = BubbleSort(NUM_ELTS);
+    ReverseBubbleSort algorithm = ReverseBubbleSort(NUM_ELTS, currIdx);
     //SelectionSort algorithm = SelectionSort(NUM_ELTS);
-    RadixSort algorithm = RadixSort(NUM_ELTS, MAX_RADIUS);
+    //RadixSort algorithm = RadixSort(NUM_ELTS, MAX_RADIUS);
     
     void initializeElements() {
         std::uniform_real_distribution<float> dist(MIN_RADIUS, MAX_RADIUS);
@@ -55,8 +61,8 @@ private:
         for (int i = 0; i < NUM_ELTS; ++i) {
 
             float theta = i * (2 * M_PI / NUM_ELTS);
-            float x = (WINDOW_WIDTH / 2) + (elts[i] * std::cos(theta));
-            float y = (WINDOW_HEIGHT / 2) + (elts[i] * std::sin(theta));
+            float x = (WINDOW_WIDTH / 2) + ((elts[i] / GROWTH_FACTOR) * std::cos(theta));
+            float y = (WINDOW_HEIGHT / 2) + ((elts[i] / GROWTH_FACTOR) * std::sin(theta));
             lines[i * 2].position = sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
             lines[i * 2 + 1].position = sf::Vector2f(x, y);
             
@@ -77,7 +83,7 @@ private:
     }
 
 public:
-    SortVisualizer() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Selection Sort") {
+    SortVisualizer() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Polar Sorting") {
         window.setFramerateLimit(120);
         rng.seed(std::random_device()());
         initializeElements();
@@ -97,6 +103,9 @@ public:
                 render();
             }
             else if (!endAnimationComplete) {
+                for (int i = 1; i < NUM_ELTS; i++) {
+                    std::cout << "index: " << (elts[i] > elts[i - 1]) << "\n";
+                }
                 // Re-iterate through all elements
                 for (currIdx = 0; currIdx < NUM_ELTS; currIdx += 10) {
                     render();
