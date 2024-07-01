@@ -1,9 +1,9 @@
-#include "SelectionSort.hpp"
+#include "MinSelectionSort.hpp"
 
-SelectionSort::SelectionSort(const int &NUM_ELTS) : 
+MinSelectionSort::MinSelectionSort(const int &NUM_ELTS) : 
         NUM_ELEMENTS(NUM_ELTS), selectIdx(0), selectMinIdx(0) {}
 
-bool SelectionSort::step(int &currIdx, std::vector<float> &elements) {
+bool MinSelectionSort::step(int &currIdx, std::vector<float> &elements) {
         if (selectIdx >= NUM_ELEMENTS - 1) {
             return true;
         }

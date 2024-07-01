@@ -7,7 +7,8 @@
 #include "SortingAlgorithms/BubbleSort.cpp"
 #include "SortingAlgorithms/ReverseBubbleSort.cpp"
 #include "SortingAlgorithms/InsertionSort.cpp"
-#include "SortingAlgorithms/SelectionSort.cpp"
+#include "SortingAlgorithms/MinSelectionSort.cpp"
+#include "SortingAlgorithms/MaxSelectionSort.cpp"
 #include "SortingAlgorithms/RadixSort.cpp"
 
 const int WINDOW_WIDTH = 800;
@@ -45,8 +46,9 @@ private:
 
     //InsertionSort algorithm = InsertionSort(NUM_ELTS);
     //BubbleSort algorithm = BubbleSort(NUM_ELTS);
-    ReverseBubbleSort algorithm = ReverseBubbleSort(NUM_ELTS, currIdx);
-    //SelectionSort algorithm = SelectionSort(NUM_ELTS);
+    //ReverseBubbleSort algorithm = ReverseBubbleSort(NUM_ELTS, currIdx);
+    //MinSelectionSort algorithm = MinSelectionSort(NUM_ELTS);
+    MaxSelectionSort algorithm = MaxSelectionSort(NUM_ELTS, currIdx);
     //RadixSort algorithm = RadixSort(NUM_ELTS, MAX_RADIUS);
     
     void initializeElements() {

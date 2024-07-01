@@ -3,15 +3,15 @@
 #include <algorithm>
 
 
-class SelectionSort {
+class MaxSelectionSort {
     private:
         const int NUM_ELEMENTS;
         int selectIdx;
-        int selectMinIdx;
+        int selectMaxIdx;
         
 
     public:
-        SelectionSort(const int &NUM_ELTS);
+        MaxSelectionSort(const int &NUM_ELTS, int &currIdx);
         
         bool step(int &currIdx, std::vector<float> &elements);
 
