@@ -1,10 +1,9 @@
 #include "RadixSort.hpp"
 #include <iostream>
 
-RadixSort::RadixSort(const int &NUM_ELTS, const float &MAX_RADIUS) : 
-        NUM_ELEMENTS(NUM_ELTS),
-         MAX_R(MAX_RADIUS),
-          //converted(false),
+RadixSort::RadixSort(const int &NUM_ELTS, const float &MAX_RADIUS) :
+         NUM_ELEMENTS(NUM_ELTS),
+          MAX_R(MAX_RADIUS),
            counted(false),
             accumulated(false),
             // Not perfect, but pretty precise for using a vector of floats
