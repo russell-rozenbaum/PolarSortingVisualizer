@@ -19,7 +19,7 @@ const int GROWTH_FACTOR = 1;
 const float MIN_RADIUS = 0.f;
 const float MAX_RADIUS = 377.f * GROWTH_FACTOR;
 const sf::Color HIGHLIGHT = sf::Color(255, 115, 115);
-const int STEPS_PER_FRAME = 8359;
+int stepsPerFrame;
 
 enum class Algorithm {
     Bubble,

@@ -1,7 +1,7 @@
 #include "Visualizer.cpp"
 
 int main() {
-    Visualizer visualizer(Algorithm::ReverseBubble, Theme::Sunset);
+    Visualizer visualizer(Algorithm::Radix, Theme::Sunset);
     visualizer.run();
     return 0;
 }

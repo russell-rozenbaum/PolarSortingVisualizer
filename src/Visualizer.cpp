@@ -2,22 +2,8 @@
 
 Visualizer::Visualizer(const Algorithm &a, const Theme &th) : algo(a), theme(th), window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Polar Sorting") {
 
-    /* To-do: Implement sorting algorithm class derivation
-    switch (algo) {
-        case Algorithm::Bubble :
-            break;
-        case Algorithm::ReverseBubble :
-            break;
-        case Algorithm::MinSelection :
-            break;
-        case Algorithm::MaxSelection :
-            break;
-        case Algorithm::Insertion :
-            break;
-        case Algorithm::Radix :
-            break;
-    }*/
-   
+    (a == Algorithm::Radix) ? stepsPerFrame = 80 : stepsPerFrame = 8033;
+
     window.setFramerateLimit(120);
     rng.seed(std::random_device()());
     initializeElements();
@@ -64,7 +50,7 @@ void Visualizer::run() {
                 window.close();
         }
         if (!sortingComplete) {
-            for (int timer = 0; timer < STEPS_PER_FRAME; ++timer) {
+            for (int timer = 0; timer < stepsPerFrame; ++timer) {
                 switch (algo) {
                     case Algorithm::Bubble :
                         sortingComplete = bubble.step(currIdx, elts) || sortingComplete;
