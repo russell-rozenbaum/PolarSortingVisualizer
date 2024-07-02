@@ -4,12 +4,12 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
-#include "SortingAlgorithms/BubbleSort.cpp"
-#include "SortingAlgorithms/ReverseBubbleSort.cpp"
-#include "SortingAlgorithms/InsertionSort.cpp"
-#include "SortingAlgorithms/MinSelectionSort.cpp"
-#include "SortingAlgorithms/MaxSelectionSort.cpp"
-#include "SortingAlgorithms/RadixSort.cpp"
+#include "../SortingAlgorithms/BubbleSort.cpp"
+#include "../SortingAlgorithms/ReverseBubbleSort.cpp"
+#include "../SortingAlgorithms/InsertionSort.cpp"
+#include "../SortingAlgorithms/MinSelectionSort.cpp"
+#include "../SortingAlgorithms/MaxSelectionSort.cpp"
+#include "../SortingAlgorithms/RadixSort.cpp"
 #include "Themes.cpp"
 
 const int WINDOW_WIDTH = 800;
