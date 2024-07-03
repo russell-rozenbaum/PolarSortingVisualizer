@@ -1,23 +1,25 @@
 #include "InsertionSort.hpp"
 
-InsertionSort::InsertionSort(const int &NUM_ELTS) : 
-        NUM_ELEMENTS(NUM_ELTS), insertIdx(0) {}
+InsertionSort::InsertionSort(const int &NUM_ELTS, int *currIdx, int *swaps, int *comparisons) : 
+        NUM_ELEMENTS(NUM_ELTS), insertIdx(0), idx(currIdx), numSwaps(swaps), numComparisons(comparisons) {}
 
-bool InsertionSort::step(int &currIdx, std::vector<float> &elements) {
+bool InsertionSort::step(std::vector<float> &elements) {
         if (insertIdx >= NUM_ELEMENTS - 1) {
             return true;
         }
-        if (currIdx <= 0) {
+        if (*idx <= 0) {
             insertIdx++;
-            currIdx = insertIdx;
+            *idx = insertIdx;
         }
-        else if (elements[currIdx] < elements[currIdx - 1]) {
-            std::swap(elements[currIdx], elements[currIdx - 1]);
-            currIdx--;
+        else if (elements[*idx] < elements[*idx - 1]) {
+            std::swap(elements[*idx], elements[*idx - 1]);
+            (*numSwaps)++;
+            (*idx)--;
         }
         else {
             insertIdx++;
-            currIdx = insertIdx;
+            *idx = insertIdx;
         }
+        (*numComparisons)++;
         return false;
     }

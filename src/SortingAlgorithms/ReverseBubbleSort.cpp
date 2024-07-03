@@ -1,20 +1,21 @@
 #include "ReverseBubbleSort.hpp"
 
-ReverseBubbleSort::ReverseBubbleSort(const int &NUM_ELTS, int &currIdx) : 
-    NUM_ELEMENTS(NUM_ELTS), bottomIndex(1) {
-        currIdx = NUM_ELEMENTS - 1;
+ReverseBubbleSort::ReverseBubbleSort(const int &NUM_ELTS, int *currIdx, int *swaps, int *comparisons) : 
+    NUM_ELEMENTS(NUM_ELTS), bottomIndex(1), idx(currIdx), numSwaps(swaps), numComparisons(comparisons) {
+        *idx = NUM_ELEMENTS - 1;
     }
 
-bool ReverseBubbleSort::step(int &currIdx, std::vector<float> &elements) {
-        if (currIdx < bottomIndex) {
-            currIdx = NUM_ELEMENTS - 1;
+bool ReverseBubbleSort::step(std::vector<float> &elements) {
+        if (*idx < bottomIndex) {
+            *idx = NUM_ELEMENTS - 1;
             bottomIndex++;
             if (bottomIndex >= NUM_ELEMENTS) return true;
         }
-
-        if (elements[currIdx] < elements[currIdx - 1]) {
-            std::swap(elements[currIdx], elements[currIdx - 1]);
+        if (elements[*idx] < elements[*idx - 1]) {
+            std::swap(elements[*idx], elements[*idx - 1]);
+            (*numSwaps)++;
         }
-        currIdx--;
+        (*numComparisons)++;
+        (*idx)--;
         return false;
     }

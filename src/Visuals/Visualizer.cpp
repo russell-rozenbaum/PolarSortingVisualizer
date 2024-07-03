@@ -2,11 +2,12 @@
 
 Visualizer::Visualizer(const Algorithm &a, const Theme &th) : algo(a), theme(th), window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Polar Sorting") {
 
-    (a == Algorithm::Radix) ? stepsPerFrame = 80 : stepsPerFrame = 8033;
+    (a == Algorithm::Radix) ? stepsPerFrame = 120 : stepsPerFrame = 64333;
 
     window.setFramerateLimit(120);
     rng.seed(std::random_device()());
     initializeElements();
+    initializeText();
 }
 
 void Visualizer::initializeElements() {
@@ -14,6 +15,21 @@ void Visualizer::initializeElements() {
     for (int i = 0; i < NUM_ELTS; ++i) {
         elts.push_back(dist(rng));
     }
+}
+
+void Visualizer::initializeText() {
+    if (!font.loadFromFile("obj/Raleway-VariableFont_wght.ttf")) {
+        // Handle font loading error
+    }
+    titleText.setFont(font);
+    titleText.setCharacterSize(24);
+    titleText.setFillColor(sf::Color::White);
+    titleText.setPosition(10, 10);
+
+    statsText.setFont(font);
+    statsText.setCharacterSize(18);
+    statsText.setFillColor(sf::Color::White);
+    statsText.setPosition(10, 40);
 }
 
 void Visualizer::drawElements() {
@@ -36,9 +52,29 @@ void Visualizer::drawElements() {
     window.draw(lines);
 }
 
+void Visualizer::updateText() {
+    std::string algorithmName;
+    switch (algo) {
+        case Algorithm::Bubble: algorithmName = "Bubble Sort"; break;
+        case Algorithm::ReverseBubble: algorithmName = "Sinking Sort"; break;
+        case Algorithm::MinSelection: algorithmName = "Selection Sort (Minimum Element Search)"; break;
+        case Algorithm::MaxSelection: algorithmName = "Selection Sort (Maximum Element Search)"; break;
+        case Algorithm::Insertion: algorithmName = "Insertion Sort"; break;
+        case Algorithm::Radix: algorithmName = "Radix Sort"; break;
+    }
+    titleText.setString(algorithmName);
+
+    std::ostringstream stats;
+    stats << "Comparisons: " << comparisons << " | Swaps: " << swaps;
+    statsText.setString(stats.str());
+}
+
 void Visualizer::render() {
     window.clear(sf::Color::Black);
     drawElements();
+    updateText();
+    window.draw(titleText);
+    window.draw(statsText);
     window.display();
 }
 
@@ -53,22 +89,22 @@ void Visualizer::run() {
             for (int timer = 0; timer < stepsPerFrame; ++timer) {
                 switch (algo) {
                     case Algorithm::Bubble :
-                        sortingComplete = bubble.step(currIdx, elts) || sortingComplete;
+                        sortingComplete = bubble.step(elts) || sortingComplete;
                         break;
                     case Algorithm::ReverseBubble :
-                        sortingComplete = reverseBubble.step(currIdx, elts) || sortingComplete;
+                        sortingComplete = reverseBubble.step(elts) || sortingComplete;
                         break;
                     case Algorithm::MinSelection :
-                        sortingComplete = minSelection.step(currIdx, elts) || sortingComplete;
+                        sortingComplete = minSelection.step(elts) || sortingComplete;
                         break;
                     case Algorithm::MaxSelection :
-                        sortingComplete = maxSelection.step(currIdx, elts) || sortingComplete;
+                        sortingComplete = maxSelection.step(elts) || sortingComplete;
                         break;
                     case Algorithm::Insertion :
-                        sortingComplete = insertion.step(currIdx, elts) || sortingComplete;
+                        sortingComplete = insertion.step(elts) || sortingComplete;
                         break;
                     case Algorithm::Radix :
-                        sortingComplete = radix.step(currIdx, elts) || sortingComplete;
+                        sortingComplete = radix.step(elts) || sortingComplete;
                         break;
                 }
             }
@@ -79,11 +115,12 @@ void Visualizer::run() {
                 std::cout << "index: " << (elts[i] > elts[i - 1]) << "\n";
             }
             // Re-iterate through all elements
-            for (currIdx = 0; currIdx < NUM_ELTS; currIdx += 10) {
+            for (currIdx = 0; currIdx < NUM_ELTS; currIdx += 60) {
                 render();
             }
             endAnimationComplete = true;
         }
-        else render();
+        else window.close();
+        //else render();
     }
 }

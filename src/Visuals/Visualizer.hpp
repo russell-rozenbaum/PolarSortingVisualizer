@@ -4,6 +4,7 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include "../SortingAlgorithms/BubbleSort.cpp"
 #include "../SortingAlgorithms/ReverseBubbleSort.cpp"
 #include "../SortingAlgorithms/InsertionSort.cpp"
@@ -14,7 +15,7 @@
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 800;
-const int NUM_ELTS = 4000;
+const int NUM_ELTS = 12000;
 const int GROWTH_FACTOR = 1;
 const float MIN_RADIUS = 0.f;
 const float MAX_RADIUS = 377.f * GROWTH_FACTOR;
@@ -41,18 +42,27 @@ private:
     Themes theme;
     Algorithm algo;
 
+    sf::Font font;
+    sf::Text titleText;
+    sf::Text statsText;
+    int comparisons = 0;
+    int swaps = 0;
 
 
-    InsertionSort insertion = InsertionSort(NUM_ELTS);
-    BubbleSort bubble = BubbleSort(NUM_ELTS);
-    ReverseBubbleSort reverseBubble = ReverseBubbleSort(NUM_ELTS, currIdx);
-    MinSelectionSort minSelection = MinSelectionSort(NUM_ELTS);
-    MaxSelectionSort maxSelection = MaxSelectionSort(NUM_ELTS, currIdx);
-    RadixSort radix = RadixSort(NUM_ELTS, MAX_RADIUS);
+    InsertionSort insertion = InsertionSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
+    BubbleSort bubble = BubbleSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
+    ReverseBubbleSort reverseBubble = ReverseBubbleSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
+    MinSelectionSort minSelection = MinSelectionSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
+    MaxSelectionSort maxSelection = MaxSelectionSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
+    RadixSort radix = RadixSort(NUM_ELTS, MAX_RADIUS, &currIdx, &swaps, &comparisons);
     
     void initializeElements();
 
+    void initializeText();
+
     void drawElements();
+
+    void updateText();
 
     void render();
 

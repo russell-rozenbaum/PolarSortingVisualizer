@@ -1,30 +1,33 @@
 #include "RadixSort.hpp"
 #include <iostream>
 
-RadixSort::RadixSort(const int &NUM_ELTS, const float &MAX_RADIUS) :
+RadixSort::RadixSort(const int &NUM_ELTS, const float &MAX_RADIUS, int *currIdx, int *swaps, int *comparisons) :
          NUM_ELEMENTS(NUM_ELTS),
           MAX_R(MAX_RADIUS),
            counted(false),
             accumulated(false),
             // Not perfect, but pretty precise for using a vector of floats
-              place(0.0001)
+              place(0.0001), 
+              idx(currIdx), 
+               numSwaps(swaps), 
+                numComparisons(comparisons)
                 { for (int i = 0; i < 10; i++) buckets[i] = 0; }
 
-bool RadixSort::step(int &currIdx, std::vector<float> &elements) {
+bool RadixSort::step(std::vector<float> &elements) {
     if (MAX_R / place <= 1) {
         return true;
     }
     
     if (!counted) { 
-        countOfOcc(currIdx, elements);
+        countOfOcc(elements);
     }
     else if (!accumulated) {
         accumulateBuckets();
     }
-    // Not sure, but inaccuracies with visualization may occur as 
+    // To-do: Inaccuracies with visualization may occur as 
     // discrepencies between snapshot and elements begin to emerge
     else  {
-        construct(currIdx,elements);
+        construct(elements);
     }
 
     return false;
@@ -43,16 +46,17 @@ void RadixSort::convertToIntList(int &currIdx, std::vector<float> &elements) {
 }
 */
 
-void RadixSort::countOfOcc(int &currIdx, const std::vector<float> &elements) {
-    if (currIdx >= NUM_ELEMENTS) {
+void RadixSort::countOfOcc(const std::vector<float> &elements) {
+    if (*idx >= NUM_ELEMENTS) {
         counted = true;
-        currIdx = NUM_ELEMENTS - 1;
+        *idx = NUM_ELEMENTS - 1;
         // Perform deep copy to hold current state of elements
         snapshot = elements;
         return;
     }
-    buckets[static_cast<int>(elements[currIdx] / place) % 10]++;
-    currIdx++;
+    buckets[static_cast<int>(elements[*idx] / place) % 10]++;
+    (*numComparisons)++;
+    (*idx)++;
 }
 
 void RadixSort::accumulateBuckets() {
@@ -62,14 +66,15 @@ void RadixSort::accumulateBuckets() {
     accumulated = true;
 }
 
-void RadixSort::construct(int &currIdx, std::vector<float> &elements) {
-    if (currIdx < 0) {
-        currIdx = 0;
+void RadixSort::construct(std::vector<float> &elements) {
+    if (*idx < 0) {
+        *idx = 0;
         reset();
     }
-    elements[buckets[static_cast<int>(snapshot[currIdx] / place) % 10] - 1] = snapshot[currIdx];
-    buckets[static_cast<int>(snapshot[currIdx] / place) % 10]--;
-    currIdx--;
+    elements[buckets[static_cast<int>(snapshot[*idx] / place) % 10] - 1] = snapshot[*idx];
+    (*numSwaps)++;
+    buckets[static_cast<int>(snapshot[*idx] / place) % 10]--;
+    (*idx)--;
 }
 
 void RadixSort::reset() {

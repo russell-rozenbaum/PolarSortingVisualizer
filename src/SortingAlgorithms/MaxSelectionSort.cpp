@@ -1,23 +1,25 @@
 #include "MaxSelectionSort.hpp"
 
-MaxSelectionSort::MaxSelectionSort(const int &NUM_ELTS, int& currIdx) : 
-        NUM_ELEMENTS(NUM_ELTS), selectIdx(NUM_ELTS - 1), selectMaxIdx(0) {
-            currIdx = selectIdx;
+MaxSelectionSort::MaxSelectionSort(const int &NUM_ELTS, int *currIdx, int *swaps, int *comparisons) : 
+        NUM_ELEMENTS(NUM_ELTS), selectIdx(NUM_ELTS - 1), selectMaxIdx(0), idx(currIdx), numSwaps(swaps), numComparisons(comparisons) {
+            *currIdx = selectIdx;
         }
 
-bool MaxSelectionSort::step(int &currIdx, std::vector<float> &elements) {
+bool MaxSelectionSort::step(std::vector<float> &elements) {
         if (selectIdx < 0) {
             return true;
         }
-        else if (currIdx < 0) {
+        else if ((*idx) < 0) {
             std::swap(elements[selectIdx], elements[selectMaxIdx]);
+            (*numSwaps)++;
             selectIdx--;
-            currIdx = selectIdx - 1;
+            (*idx) = selectIdx - 1;
             selectMaxIdx = selectIdx;
         }
-        if (elements[currIdx] > elements[selectMaxIdx]) {
-            selectMaxIdx = currIdx;
+        if (elements[(*idx)] > elements[selectMaxIdx]) {
+            selectMaxIdx = (*idx);
         }
-        currIdx--;
+        (*numComparisons)++;
+        (*idx)--;
         return false;
     }
