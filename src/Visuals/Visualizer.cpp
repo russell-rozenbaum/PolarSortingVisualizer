@@ -18,7 +18,7 @@ void Visualizer::initializeElements() {
 }
 
 void Visualizer::initializeText() {
-    if (!font.loadFromFile("obj/Raleway-VariableFont_wght.ttf")) {
+    if (!font.loadFromFile("src/fonts/Raleway-VariableFont_wght.ttf")) {
         // Handle font loading error
     }
     titleText.setFont(font);
@@ -67,7 +67,7 @@ void Visualizer::updateText() {
     std::ostringstream stats;
     stats << "Comparisons: " << comparisons << "\nSwaps: " << swaps <<
      "\nSort Time: ~" << 
-     static_cast<float>(steps / static_cast<float>((stepsPerFrame * FPS) / 1000)) << " ms";
+     static_cast<float>(steps / 1000) << " thousands of steps";
     statsText.setString(stats.str());
 }
 
@@ -109,8 +109,8 @@ void Visualizer::run() {
                         sortingComplete = radix.step(elts) || sortingComplete;
                         break;
                 }
+                steps++;
             }
-            steps++;
             render();
         }
         else if (!endAnimationComplete) {
