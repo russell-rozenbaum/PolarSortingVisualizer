@@ -2,9 +2,9 @@
 
 Visualizer::Visualizer(const Algorithm &a, const Theme &th) : algo(a), theme(th), window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Polar Sorting") {
 
-    (a == Algorithm::Radix) ? stepsPerFrame = 120 : stepsPerFrame = 64333;
+    (a == Algorithm::Radix) ? stepsPerFrame = 180 : stepsPerFrame = 128000;
 
-    window.setFramerateLimit(120);
+    window.setFramerateLimit(FPS);
     rng.seed(std::random_device()());
     initializeElements();
     initializeText();
@@ -57,15 +57,17 @@ void Visualizer::updateText() {
     switch (algo) {
         case Algorithm::Bubble: algorithmName = "Bubble Sort"; break;
         case Algorithm::ReverseBubble: algorithmName = "Sinking Sort"; break;
-        case Algorithm::MinSelection: algorithmName = "Selection Sort (Minimum Element Search)"; break;
-        case Algorithm::MaxSelection: algorithmName = "Selection Sort (Maximum Element Search)"; break;
+        case Algorithm::MinSelection: algorithmName = "Selection Sort (Min Search)"; break;
+        case Algorithm::MaxSelection: algorithmName = "Selection Sort (Max Search)"; break;
         case Algorithm::Insertion: algorithmName = "Insertion Sort"; break;
         case Algorithm::Radix: algorithmName = "Radix Sort"; break;
     }
     titleText.setString(algorithmName);
 
     std::ostringstream stats;
-    stats << "Comparisons: " << comparisons << " | Swaps: " << swaps;
+    stats << "Comparisons: " << comparisons << "\nSwaps: " << swaps <<
+     "\nSort Time: ~" << 
+     static_cast<float>(steps / static_cast<float>((stepsPerFrame * FPS) / 1000)) << " ms";
     statsText.setString(stats.str());
 }
 
@@ -108,6 +110,7 @@ void Visualizer::run() {
                         break;
                 }
             }
+            steps++;
             render();
         }
         else if (!endAnimationComplete) {
@@ -115,7 +118,7 @@ void Visualizer::run() {
                 std::cout << "index: " << (elts[i] > elts[i - 1]) << "\n";
             }
             // Re-iterate through all elements
-            for (currIdx = 0; currIdx < NUM_ELTS; currIdx += 60) {
+            for (currIdx = 0; currIdx < NUM_ELTS; currIdx += 50) {
                 render();
             }
             endAnimationComplete = true;

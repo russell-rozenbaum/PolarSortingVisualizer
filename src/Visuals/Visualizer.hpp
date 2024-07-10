@@ -15,12 +15,12 @@
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 800;
-const int NUM_ELTS = 12000;
+const int FPS = 60; // (approx)
+const int NUM_ELTS = 10000;
 const int GROWTH_FACTOR = 1;
 const float MIN_RADIUS = 0.f;
 const float MAX_RADIUS = 377.f * GROWTH_FACTOR;
 const sf::Color HIGHLIGHT = sf::Color(255, 115, 115);
-int stepsPerFrame;
 
 enum class Algorithm {
     Bubble,
@@ -47,6 +47,8 @@ private:
     sf::Text statsText;
     int comparisons = 0;
     int swaps = 0;
+    int steps = 0;
+    int stepsPerFrame;
 
 
     InsertionSort insertion = InsertionSort(NUM_ELTS, &currIdx, &swaps, &comparisons);

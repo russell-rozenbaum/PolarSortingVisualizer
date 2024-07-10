@@ -14,19 +14,22 @@ RadixSort::RadixSort(const int &NUM_ELTS, const float &MAX_RADIUS, int *currIdx,
                 { for (int i = 0; i < 10; i++) buckets[i] = 0; }
 
 bool RadixSort::step(std::vector<float> &elements) {
+    // O(b) where b is log(m) of the largest number in elements
     if (MAX_R / place <= 1) {
         return true;
     }
-    
-    if (!counted) { 
+    if (!counted) {
+        // O(n)
         countOfOcc(elements);
     }
     else if (!accumulated) {
+        // O(1)
         accumulateBuckets();
     }
     // To-do: Inaccuracies with visualization may occur as 
     // discrepencies between snapshot and elements begin to emerge
     else  {
+        // O(n)
         construct(elements);
     }
 
