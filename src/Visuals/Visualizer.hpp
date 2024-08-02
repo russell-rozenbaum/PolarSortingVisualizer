@@ -11,12 +11,13 @@
 #include "../SortingAlgorithms/MinSelectionSort.cpp"
 #include "../SortingAlgorithms/MaxSelectionSort.cpp"
 #include "../SortingAlgorithms/RadixSort.cpp"
+#include "../SortingAlgorithms/ShellSort.cpp"
 #include "Themes.cpp"
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 800;
 const int FPS = 60; // (approx)
-const int NUM_ELTS = 10000;
+const int NUM_ELTS = 12000;
 const int GROWTH_FACTOR = 1;
 const float MIN_RADIUS = 0.f;
 const float MAX_RADIUS = 377.f * GROWTH_FACTOR;
@@ -29,6 +30,7 @@ enum class Algorithm {
     MaxSelection,
     Insertion,
     Radix,
+    Shell,
 };
 
 class Visualizer {
@@ -57,6 +59,7 @@ private:
     MinSelectionSort minSelection = MinSelectionSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
     MaxSelectionSort maxSelection = MaxSelectionSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
     RadixSort radix = RadixSort(NUM_ELTS, MAX_RADIUS, &currIdx, &swaps, &comparisons);
+    ShellSort shell = ShellSort(NUM_ELTS, &currIdx, &swaps, &comparisons);
     
     void initializeElements();
 

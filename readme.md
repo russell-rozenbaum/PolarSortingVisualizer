@@ -4,14 +4,23 @@ This project helps to visualize sorting algorithms with the use of a polar coord
 
 ## Algorithms
 
-### Selection Sort
-![Selection Sort](GIFVisualizations/SelectionSort.gif)
+### Max Selection Sort
+![Selection Sort](GIFVisualizations/MaxSelectionSort.gif)
+
+### Min Selection Sort
+![Selection Sort](GIFVisualizations/MinSelectionSort.gif)
 
 ### Bubble Sort
 ![Bubble Sort](GIFVisualizations/BubbleSort.gif)
 
+### Sinking Sort
+![Bubble Sort](GIFVisualizations/SinkingSort.gif)
+
 ### Insertion Sort
 ![Insertion Sort](GIFVisualizations/InsertionSort.gif)
+
+### Shell Sort
+![Insertion Sort](GIFVisualizations/ShellSort.gif)
 
 ### Radix Sort
 ![Radix Sort](GIFVisualizations/RadixSort.gif)

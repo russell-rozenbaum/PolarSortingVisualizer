@@ -11,6 +11,8 @@ int main() {
     visualizer4.run();
     Visualizer visualizer5(Algorithm::Insertion, Theme::Solar);
     visualizer5.run();
+    Visualizer visualizer7(Algorithm::Shell, Theme::Solar);
+    visualizer7.run();
     Visualizer visualizer6(Algorithm::Radix, Theme::Rusted);
     visualizer6.run();
     return 0;

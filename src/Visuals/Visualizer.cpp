@@ -61,14 +61,17 @@ void Visualizer::updateText() {
         case Algorithm::MaxSelection: algorithmName = "Selection Sort (Max Search)"; break;
         case Algorithm::Insertion: algorithmName = "Insertion Sort"; break;
         case Algorithm::Radix: algorithmName = "Radix Sort"; break;
+        case Algorithm::Shell: algorithmName = "Shell Sort"; break;
     }
     titleText.setString(algorithmName);
 
     std::ostringstream stats;
-    stats << "Comparisons: " << comparisons << "\nSwaps: " << swaps <<
+    stats << "Comparisons: " << comparisons << "\nSwaps: " << swaps;
+    /* <<
      "\nSort Time: ~" << 
-     static_cast<float>(steps / 1000) << " thousands of steps";
+     static_cast<float>(steps / 1000) << " thousands of steps"; */
     statsText.setString(stats.str());
+    
 }
 
 void Visualizer::render() {
@@ -107,6 +110,9 @@ void Visualizer::run() {
                         break;
                     case Algorithm::Radix :
                         sortingComplete = radix.step(elts) || sortingComplete;
+                        break;
+                     case Algorithm::Shell :
+                        sortingComplete = shell.step(elts) || sortingComplete;
                         break;
                 }
                 steps++;
